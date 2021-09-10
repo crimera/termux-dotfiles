@@ -36,6 +36,5 @@ addpackages () {
 }
 
 inst bin
-inst .termux
 
 addpackages
