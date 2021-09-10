@@ -39,5 +39,3 @@ inst bin
 inst .termux
 
 addpackages
-
-termux-setup-storage
