@@ -4,7 +4,7 @@ url=$1
 
 echo Download Youtube Video
 
-method="$(termux-dialog sheet -v "Download Music,Download ASMR,Download video,Cancel" | jq '.index' -r)"
+method="$(termux-dialog sheet -v "Download Music,Download ASMR,Download Video,Clip,Cancel" | jq '.index' -r)"
 
 finished () {
     termux-toast -s Your Download Is Done;
@@ -13,19 +13,23 @@ finished () {
 
 case $method in
   0)
-    yt-dlp -f bestaudio[ext=m4a] $url -o "storage/music/%(title)s.%(ext)s" --embed-thumbnail --add-metadata
+    yt-dlp -f bestaudio $url -o "storage/music/%(title)s.%(ext)s" --embed-thumbnail --add-metadata
     finished
-	;;
+	  ;;
   1)
-    yt-dlp -f bestaudio[ext=m4a] $url -o "storage/shared/ASMR/[%(upload_date)s] %(title)s [%(channel)s] - %(id)s.m4a" --embed-thumbnail --add-metadata
+    yt-dlp -f bestaudio $url -o "storage/shared/ASMR/%(channel)s/%(upload_date)s-%(title)s-%(id)s.m4a" --embed-thumbnail --add-metadata
     finished
-	;;
+	  ;;
   2)
     yt-dlp $url
     finished
-	;;
+	  ;;
   3)
+    yt-dlp
+    ;;
+  4)
     echo "bye"
     finished
     ;;
+
 esac
