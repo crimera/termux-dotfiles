@@ -13,11 +13,11 @@ finished () {
 
 case $method in
   0)
-    yt-dlp -f bestaudio $url -o "storage/music/%(title)s.%(ext)s" --embed-thumbnail --add-metadata
+    yt-dlp -f bestaudio[ext=m4a] $url -o "storage/music/%(title)s.%(ext)s" --embed-thumbnail --add-metadata
     finished
 	  ;;
   1)
-    yt-dlp -f bestaudio $url -o "storage/shared/ASMR/%(channel)s/%(upload_date)s-%(title)s-%(id)s.m4a" --embed-thumbnail --add-metadata
+    yt-dlp -f bestaudio[ext=m4a] $url -o "storage/shared/ASMR/%(channel)s/%(upload_date)s-%(title)s-%(id)s.m4a" --embed-thumbnail --add-metadata
     finished
 	  ;;
   2)
@@ -25,7 +25,10 @@ case $method in
     finished
 	  ;;
   3)
-    yt-dlp
+    start="$(termux-dialog text -i "start (HH:MM:SS)" | jq '.text' -r)"
+    end="$(termux-dialog text -i "end (HH:MM:SS)" | jq '.text' -r)"
+    title="$(termux-dialog text -i "clip title" | jq '.text' -r)"
+    ffmpeg -ss $start -to $end -i "$(youtube-dl -f best --get-url $url)" -c:v copy -c:a copy $title.mp4
     ;;
   4)
     echo "bye"
