@@ -25,11 +25,11 @@ case $method in
     finished
 	  ;;
   1)
-    yt-dlp -f bestaudio[ext=m4a] $url -o "$ASMR/%(channel)s/%(upload_date)s-%(title)s-%(id)s.m4a" --embed-thumbnail --add-metadata
+    yt-dlp -f bestaudio $url -o "$ASMR/%(channel)s/%(upload_date)s-%(title)s-%(id)s.%(ext)s" --embed-thumbnail --embed-metadata
     finished
 	  ;;
   2)
-    yt-dlp $url -o "$VIDEOS/%(title)s-%(id)s.%(ext)s"
+    yt-dlp $url -o "$VIDEOS/%(title)s-%(id)s.%(ext)s --embed-subs --embed-thumbnail --embed-metadata"
     finished
 	  ;;
   3)
