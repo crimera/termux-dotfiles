@@ -25,7 +25,7 @@ case $method in
     finished
 	  ;;
   1)
-    yt-dlp -f bestaudio $url -o "$ASMR/%(channel)s/%(upload_date)s-%(title)s-%(id)s.%(ext)s" --embed-thumbnail --embed-metadata
+    yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata -o "$ASMR/%(channel)s/%(upload_date)s-%(title)s-%(id)s.%(ext)s" --embed-thumbnail --embed-metadata $url
     finished
 	  ;;
   2)
