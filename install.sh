@@ -22,6 +22,7 @@ packages () {
     try_install git
     try_install jq
     try_install termux-api
+    try_install ffmpeg
 }
 
 addpackages () {
