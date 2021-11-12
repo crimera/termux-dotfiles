@@ -29,7 +29,7 @@ case $method in
     finished
 	  ;;
   2)
-    yt-dlp $url -o "$VIDEOS/%(title)s-%(id)s.%(ext)s --embed-subs --embed-thumbnail --embed-metadata"
+    yt-dlp $url -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" --embed-subs --embed-thumbnail --embed-metadata
     finished
 	  ;;
   3)
