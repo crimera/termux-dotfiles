@@ -1,8 +1,5 @@
 #!/bin/bash
 
-mode=$1
-GREEN='\033[1;31m'
-
 inst () {
   cp -r $1 ~/
 }
@@ -11,8 +8,8 @@ try_install() {
     dpkg -l "$1" | grep -q ^ii && return 1
     pkg upgrade
     # apt-get -y install "$@"
-    pkg install $@
-    echo "${GREEN}$1 is installed"
+    pkg install $1
+    echo "$1 is installed"
     return 0
 }
 
@@ -23,20 +20,15 @@ packages () {
     try_install jq
     try_install termux-api
     try_install ffmpeg
+    pip install yt-dlp
 }
 
-addpackages () {
-    packages
-    
-    if [ $mode == up ]; then
-        echo "Updating"
-    else
-        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-        pip install yt-dlp
-    fi
+installomz () {
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 
 inst bin
 inst .termux
 
-addpackages
+packages
+installomz
