@@ -32,3 +32,6 @@ inst .termux
 
 packages
 installomz
+
+
+termux-setup-storage
