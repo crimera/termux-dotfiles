@@ -15,7 +15,6 @@ try_install() {
 
 packages () {
     try_install python
-    try_install zsh
     try_install git
     try_install jq
     try_install termux-api
@@ -23,15 +22,9 @@ packages () {
     pip install yt-dlp
 }
 
-installomz () {
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-}
-
 inst bin
 inst .termux
 
 packages
-installomz
-
 
 termux-setup-storage
