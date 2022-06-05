@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 
 # Config
 
 MUSIC="storage/music"
-ASMR="storage/shared/ASMR"
+ASMR="storage/shared/.nsfw"
 VIDEOS="storage/movies"
 CLIPS="storage/movies/Clips"
+DOWNLOADS="storage/downloads/navi/"
 
 # End
 
@@ -13,7 +14,7 @@ url=$1
 
 echo Download Youtube Video
 
-method="$(termux-dialog sheet -v "Download ASMR,Download Music,Download Video,Clip,Cancel" | jq '.index' -r)"
+method="$(termux-dialog sheet -v "Download ASMR,Download Music,Download Video,Clip,Aria,Cancel" | jq '.index' -r)"
 
 finished () {
     termux-toast -s Your Download Is Done;
@@ -40,6 +41,10 @@ case $method in
     finished
     ;;
   4)
+    aria2c $url -d $DOWNLOADS
+    termux-notification -c "$1 Download done" --icon file_download
+    ;;
+  5)
     echo "Bye"
     ;;
 

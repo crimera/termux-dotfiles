@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in *.wav;
+  do name=`echo "$i" | cut -d'.' -f1`
+  echo "$name"
+  ffmpeg -i "$i" -c:a libvorbis -b:a 320k "${name}.ogg"
+  rm "$i"
+done

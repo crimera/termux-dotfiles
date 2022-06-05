@@ -1,0 +1,5 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+pm uninstall --user 0 com.duckduckgo.mobile.android
+pm uninstall --user 0 com.google.android.apps.cameralite
+pm uninstall --user 0 com.simplemobiletools.gallery.pro

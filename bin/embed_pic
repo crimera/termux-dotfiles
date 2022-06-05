@@ -1,0 +1,17 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+image=$2
+audio=$1
+
+case $1 in
+  -h)
+    echo 'embed_pic [audio] [image]'
+    exit
+  ;;
+esac
+
+ffmpeg -i $audio -i $image -map 0 -map 1 -c copy -c:v:1 png -disposition:v:1 attached_pic "out.$audio"
+
+rm $audio
+rm $image
+mv out.$audio $audio
