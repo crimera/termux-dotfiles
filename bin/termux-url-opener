@@ -1,3 +1,77 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-python ~/bin/main.py $1
+# Config
+
+MUSIC="$HOME/storage/music"
+ASMR="$HOME/storage/shared/.nsfw"
+VIDEOS="$HOME/storage/movies"
+CLIPS="$HOME/storage/movies/Clips"
+DOWNLOADS="$HOME/storage/downloads/navi/"
+
+# End
+
+echo $HOME
+
+url=$1
+
+# Site regexs
+yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
+zippy="zippyshare"
+
+# Functions for downloading 
+asmr() {
+  yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
+    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title)s-%(id)s.%(ext)s" $url
+}
+
+music() {
+  yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
+    -o "$MUSIC/%(title)s.%(ext)s" $url
+}
+
+video() {
+  yt-dlp $url -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' \
+    -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" \
+    --embed-subs --embed-thumbnail --embed-metadata
+}
+aria() {
+  aria2c -x10 -d $DOWNLOADS \
+    --on-download-complete "$HOME/bin/openfile.sh" \
+    $url
+}
+
+# Check what site is being passed
+if [[ $1 =~ $yt ]]; then
+  echo Download a youtube video
+  method="$(termux-dialog sheet -v "ASMR,Music,Video,Clip" | jq '.index' -r)"
+  case $method in
+  0)
+    asmr
+    ;;
+  1)
+    music
+    ;;
+  2)
+    video
+    ;;
+  esac
+elif [[ $1 =~ $zippy ]]; then
+  echo zippyshare
+  aria
+else
+  method="$(termux-dialog sheet -v "ASMR,Music,Video,Clip,Aria" | jq '.index' -r)"
+  case $method in
+  0)
+    asmr
+    ;;
+  1)
+    music
+    ;;
+  2)
+    video
+    ;;
+  4)
+    aria
+    ;;
+  esac
+fi

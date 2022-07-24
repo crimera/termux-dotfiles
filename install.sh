@@ -8,7 +8,7 @@ try_install() {
     dpkg -l "$1" | grep -q ^ii && return 1
     pkg upgrade
     # apt-get -y install "$@"
-    pkg install $1
+    pkg install -y $1
     echo "$1 is installed"
     return 0
 }
