@@ -10,9 +10,9 @@ DOWNLOADS="$HOME/storage/downloads/navi/"
 
 # End
 
-echo $HOME
-
 url=$1
+
+echo $url
 
 # Site regexs
 yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
@@ -21,23 +21,27 @@ zippy="zippyshare"
 # Functions for downloading 
 asmr() {
   yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
+    --external-downloader aria2c --external-downloader-args "-x 16  -k 1M" \
     -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title)s-%(id)s.%(ext)s" $url
 }
 
 music() {
   yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
+    --external-downloader aria2c --external-downloader-args "-x 16 -k 1M" \
     -o "$MUSIC/%(title)s.%(ext)s" $url
 }
 
 video() {
   yt-dlp $url -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' \
     -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" \
+    --external-downloader aria2c --external-downloader-args "-x 16 -k 1M" \
     --embed-subs --embed-thumbnail --embed-metadata
 }
 aria() {
-  aria2c -x10 -d $DOWNLOADS \
-    --on-download-complete "$HOME/bin/openfile.sh" \
+  aria2c -x16 -d $DOWNLOADS \
+    --on-download-complete "$HOME/bin/openfile" \
     $url
+  exit
 }
 
 # Check what site is being passed
@@ -75,3 +79,5 @@ else
     ;;
   esac
 fi
+
+termux-toast -s "Download Done"
