@@ -1,0 +1,6 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+path=$3
+remove="$HOME/storage/downloads/navi/"
+
+termux-toaat -s "${path//$remove/}"
