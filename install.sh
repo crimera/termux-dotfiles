@@ -19,12 +19,18 @@ packages () {
     try_install jq
     try_install termux-api
     try_install ffmpeg
+    try_install fish
     pip install yt-dlp
 }
 
 inst bin
 inst .termux
 
-packages
+if [ "$1" != "u" ]; then
+  echo installing
+  packages
 
-termux-setup-storage
+  termux-setup-storage
+  echo "set fish as default shell"
+  chsh
+fi

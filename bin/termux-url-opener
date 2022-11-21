@@ -16,28 +16,31 @@ echo $url
 
 # Site regexs
 yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
-zippy="zippyshare"
 
 # Functions for downloading 
 asmr() {
+  echo ASMR
   yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
     --external-downloader aria2c --external-downloader-args "-x 16  -k 1M" \
-    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title)s-%(id)s.%(ext)s" $url
+    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title)s-%(id)s.%(ext)s" --exec touch $url
 }
 
 music() {
+  echo Music
   yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
     --external-downloader aria2c --external-downloader-args "-x 16 -k 1M" \
     --postprocessor-args "-filter:v crop=in_h" \
-    -o "$MUSIC/%(title)s.%(ext)s" $url
+    -o "$MUSIC/%(title)s.%(ext)s" --exec touch $url
 }
 
 video() {
+  echo Video
   yt-dlp $url -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' \
     -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" \
     --external-downloader aria2c --external-downloader-args "-x 16 -k 1M" \
     --embed-subs --embed-thumbnail --embed-metadata \
-    -S res,hdr,fps,vcodec:av01:h265:vp9.2:vp9:h264,vbr
+    -S res,hdr,fps,vcodec:av01:h265:vp9.2:vp9:h264,vbr \
+    --exec touch
 }
 aria() {
   aria2c -x16 -d $DOWNLOADS \
@@ -46,40 +49,65 @@ aria() {
   exit
 }
 
-# Check what site is being passed
-if [[ $1 =~ $yt ]]; then
-  echo Download a youtube video
+spot() {
+  spotdl $url --output $MUSIC
+}
+
+yt() {
   method="$(termux-dialog sheet -v "ASMR,Music,Video,Clip" | jq '.index' -r)"
   case $method in
   0)
     asmr
-    ;;
+  ;;
   1)
     music
-    ;;
+  ;;
   2)
     video
-    ;;
+  ;;
+  *)
+    exit
+  ;;
   esac
-elif [[ $1 =~ $zippy ]]; then
-  echo zippyshare
-  aria
-else
-  method="$(termux-dialog sheet -v "ASMR,Music,Video,Clip,Aria" | jq '.index' -r)"
+}
+
+uns() {
+  method="$(termux-dialog sheet -v "Music,Video,Aria" | jq '.index' -r)"
   case $method in
   0)
-    asmr
-    ;;
-  1)
     music
     ;;
-  2)
+  1)
     video
     ;;
-  4)
+  2)
     aria
     ;;
   esac
-fi
+}
 
-termux-toast -s "Download Done"
+# Check what site is being passed
+case $url in
+*youtube.com* | *youtu.be*)
+  echo Download a yt vid
+  yt
+;;
+*twitter*)
+  echo twitter
+  video
+;;
+*sourceforge* | *zippyshare*)
+  echo download file
+  aria
+;;
+*spotify*)
+  spot
+;;
+*music.youtube*)
+  music
+;;
+*)
+  echo "unsupported site"
+  uns
+;;
+esac
