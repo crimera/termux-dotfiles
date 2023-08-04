@@ -21,7 +21,7 @@ yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 # Functions for downloading 
 
 ytdl() {
-  out=$(yt-dlp "https://youtu.be/lapzIIcPaAk" --external-downloader-args "aria2c: -x 16  -k 10M" "${@}" | tee /dev/tty)
+  out=$(yt-dlp "$url" --external-downloader-args "aria2c: -x 16  -k 10M" "${@}" | tee /dev/tty)
   path=$(grep 'Destination' <<< "$out" | tail -n 1 | cut -d ":" -f 2)
   filename=$(basename "$path")
 
