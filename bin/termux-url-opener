@@ -115,7 +115,7 @@ https://music.youtube.com/watch?v=+([a-zA-Z0-9_-])*)
   echo twitter
   video
 ;;
-*sourceforge* | *zippyshare*)
+*sourceforge* | *zippyshare* | *github*)
   echo download file
   aria
 ;;
