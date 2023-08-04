@@ -2,18 +2,12 @@
 
 # Config
 
-MUSIC="$HOME/storage/music"
-ASMR="$HOME/storage/shared/.nsfw"
-VIDEOS="$HOME/storage/movies"
-#!/data/data/com.termux/files/usr/bin/bash
-
-# Config
-
-MUSIC="$HOME/storage/music"
-ASMR="$HOME/storage/shared/.nsfw"
-VIDEOS="$HOME/storage/movies"
-CLIPS="$HOME/storage/movies/Clips"
-DOWNLOADS="$HOME/storage/downloads/navi"
+STORAGE="$HOME/storage"
+MUSIC="$STORAGE/music"
+ASMR="$STORAGE/shared/.nsfw"
+VIDEOS="$STORAGE/movies"
+CLIPS="$STORAGE/movies/Clips"
+DOWNLOADS="$STORAGE/downloads"
 
 # End
 
@@ -25,30 +19,33 @@ echo $url
 yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 
 # Functions for downloading 
+
+ytdl() {
+  yt-dlp $url --external-downloader-args "aria2c: -x 16  -k 10M" "${@}"
+}
+
 asmr() {
   echo ASMR
-  yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
-    --external-downloader aria2c --external-downloader-args "-x 16  -k 1M" \
-    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title)s-%(id)s.%(ext)s" --no-mtime $url
+  ytdl -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
+    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title).150B-%(id)s.%(ext)s" --no-mtime $url
 }
 
 music() {
   echo Music
-  yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
-    --external-downloader aria2c --external-downloader-args "-x 16 -k 1M" \
+  ytdl -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
     --postprocessor-args "-filter:v crop=in_h" \
-    -o "$MUSIC/%(title)s.%(ext)s" --no-mtime $url
+    -o "$MUSIC/%(title)s.%(ext)s" --no-mtime
 }
 
 video() {
   echo Video
-  yt-dlp $url -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' \
+  ytdl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' \
     -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" \
-    --external-downloader aria2c --external-downloader-args "-x 16 -k 1M" \
     --embed-subs --embed-thumbnail --embed-metadata \
     -S res,hdr,fps,vcodec:av01:h265:vp9.2:vp9:h264,vbr \
     --no-mtime
 }
+
 aria() {
   aria2c -x16 -d $DOWNLOADS \
     --on-download-complete "$HOME/bin/openfile" \
@@ -58,10 +55,16 @@ aria() {
 
 spot() {
   spotdl $url --output $MUSIC
+  exit
+}
+
+play_audio() {
+  mpv --no-video $url
+  exit
 }
 
 yt() {
-  method="$(termux-dialog sheet -v "ASMR,Music,Video,Clip" | jq '.index' -r)"
+  method="$(termux-dialog sheet -v "ASMR,Music,Video,Play in mpv" | jq '.index' -r)"
   case $method in
   0)
     asmr
@@ -71,6 +74,9 @@ yt() {
   ;;
   2)
     video
+  ;;
+  3)
+    play_audio
   ;;
   *)
     exit
@@ -93,8 +99,14 @@ uns() {
   esac
 }
 
+# Enable extglob for regex
+shopt -s extglob
+
 # Check what site is being passed
 case $url in
+https://music.youtube.com/watch?v=+([a-zA-Z0-9_-])*)
+  music
+;;
 *youtube.com* | *youtu.be*)
   echo Download a yt vid
   yt
@@ -110,120 +122,11 @@ case $url in
 *spotify*)
   spot
 ;;
-*music.youtube*)
-  music
-;;
 *)
   echo "unsupported site"
   uns
 ;;
 esac
 
-termux-toast -s "Download Done"="$HOME/storage/movies/Clips"
-DOWNLOADS="$HOME/storage/downloads/navi"
-
-# End
-
-url=$1
-
-echo $url
-
-# Site regexs
-yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
-
-# Functions for downloading 
-asmr() {
-  echo ASMR
-  yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
-    --external-downloader aria2c --external-downloader-args "-x 16  -k 1M" \
-    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title)s-%(id)s.%(ext)s" --no-mtime $url
-}
-
-music() {
-  echo Music
-  yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
-    --external-downloader aria2c --external-downloader-args "-x 16 -k 1M" \
-    --postprocessor-args "-filter:v crop=in_h" \
-    -o "$MUSIC/%(title)s.%(ext)s" --no-mtime $url
-}
-
-video() {
-  echo Video
-  yt-dlp $url -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' \
-    -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" \
-    --external-downloader aria2c --external-downloader-args "-x 16 -k 1M" \
-    --embed-subs --embed-thumbnail --embed-metadata \
-    -S res,hdr,fps,vcodec:av01:h265:vp9.2:vp9:h264,vbr \
-    --no-mtime
-}
-aria() {
-  aria2c -x16 -d $DOWNLOADS \
-    --on-download-complete "$HOME/bin/openfile" \
-    $url
-  exit
-}
-
-spot() {
-  spotdl $url --output $MUSIC
-}
-
-yt() {
-  method="$(termux-dialog sheet -v "ASMR,Music,Video,Clip" | jq '.index' -r)"
-  case $method in
-  0)
-    asmr
-  ;;
-  1)
-    music
-  ;;
-  2)
-    video
-  ;;
-  *)
-    exit
-  ;;
-  esac
-}
-
-uns() {
-  method="$(termux-dialog sheet -v "Music,Video,Aria" | jq '.index' -r)"
-  case $method in
-  0)
-    music
-    ;;
-  1)
-    video
-    ;;
-  2)
-    aria
-    ;;
-  esac
-}
-
-# Check what site is being passed
-case $url in
-*youtube.com* | *youtu.be*)
-  echo Download a yt vid
-  yt
-;;
-*twitter*)
-  echo twitter
-  video
-;;
-*sourceforge* | *zippyshare*)
-  echo download file
-  aria
-;;
-*spotify*)
-  spot
-;;
-*music.youtube*)
-  music
-;;
-*)
-  echo "unsupported site"
-  uns
-;;
-esac
-
+exit
 termux-toast -s "Download Done"
