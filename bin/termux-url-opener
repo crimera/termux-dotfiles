@@ -22,13 +22,15 @@ yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 
 asmr() {
   echo ASMR
-  yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
+  yt-dlp -f bestaudio -x --embed-thumbnail --embed-metadata \
+    --audio-format m4a
     -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title).150B-%(id)s.%(ext)s" --no-mtime $url
 }
 
 music() {
   echo Music
-  yt-dlp -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
+  yt-dlp -x --embed-thumbnail --embed-metadata \
+    --audio-format m4a \
     --postprocessor-args "-filter:v crop=in_h" \
     -o "$MUSIC/%(title)s.%(ext)s" --no-mtime $url
 }
