@@ -35,11 +35,9 @@ music() {
 
 video() {
   echo Video
-  yt-dlp $url -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' \
+  yt-dlp "$url" -f "best[ext=mp4]" \
     -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" \
-    --embed-subs --embed-thumbnail --embed-metadata \
-    -S res,hdr,fps,vcodec:av01:h265:vp9.2:vp9:h264,vbr \
-    --no-mtime
+    --embed-subs --embed-thumbnail --no-mtime
 }
 
 aria() {
