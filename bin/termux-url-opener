@@ -21,34 +21,32 @@ yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 # Functions for downloading 
 
 ytdl() {
-  out=$(yt-dlp "$url" --external-downloader-args "aria2c: -x 16  -k 10M" "${@}" | tee /dev/tty)
+  out=$(yt-dlp "$url"  "${@}" --no-mtime | tee /dev/tty)
   path=$(grep 'Destination' <<< "$out" | tail -n 1 | cut -d ":" -f 2)
   filename=$(basename "$path")
 
-  echo "$path"
-  termux-notification --action "termux-open \"${path/ /}\"" -c "click to open" -t "$filename" --icon download_done
+  termux-notification -t "$filename" -c "Download done" --icon download_done
 }
 
 asmr() {
   echo ASMR
   ytdl -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
-    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title).150B-%(id)s.%(ext)s" --no-mtime
+    -o '$ASMR/yt/%(channel)s/%(upload_date)s-%(title).150B-%(id)s.%(ext)s'
 }
 
 music() {
   echo Music
   ytdl -f bestaudio --extract-audio --embed-thumbnail --embed-metadata \
-    --postprocessor-args "-filter:v crop=in_h" \
-    -o "$MUSIC/%(title)s.%(ext)s" --no-mtime
+    --postprocessor-args 'ffmpeg:-filter:v crop=in_h' \
+    -o '$MUSIC/%(title)s.%(ext)s'
 }
 
 video() {
   echo Video
   ytdl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' \
-    -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" \
+    -o '$VIDEOS/%(title)s-%(id)s.%(ext)s' \
     --embed-subs --embed-thumbnail --embed-metadata \
-    -S res,hdr,fps,vcodec:av01:h265:vp9.2:vp9:h264,vbr \
-    --no-mtime
+    -S res,hdr,fps,vcodec:av01:h265:vp9.2:vp9:h264,vbr \ 
 }
 
 aria() {
