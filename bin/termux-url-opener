@@ -22,17 +22,16 @@ yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 
 asmr() {
   echo ASMR
-  yt-dlp -f bestaudio -x --embed-thumbnail --embed-metadata \
-    --audio-format m4a
-    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title).150B-%(id)s.%(ext)s" --no-mtime $url
+  yt-dlp -f "bestaudio[ext=m4a]" -x --embed-thumbnail --embed-metadata \
+    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title).150B-%(id)s.%(ext)s" --no-mtime "$url"
 }
 
 music() {
   echo Music
   yt-dlp -x --embed-thumbnail --embed-metadata \
-    --audio-format m4a \
+    -f "bestaudio[ext=m4a]" --audio-format m4a \
     --postprocessor-args "-filter:v crop=in_h" \
-    -o "$MUSIC/%(title)s.%(ext)s" --no-mtime $url
+    -o "$MUSIC/%(title)s.%(ext)s" --no-mtime "$url"
 }
 
 video() {
@@ -45,17 +44,17 @@ video() {
 aria() {
   aria2c -x16 -d $DOWNLOADS \
     --on-download-complete "$HOME/bin/openfile" \
-    $url
+    "$url"
   exit
 }
 
 spot() {
-  spotdl $url --output $MUSIC
+  spotdl "$url" --output $MUSIC
   exit
 }
 
 play_audio() {
-  mpv --no-video $url
+  mpv --no-video "$url"
   exit
 }
 
@@ -99,7 +98,7 @@ uns() {
 shopt -s extglob
 
 # Check what site is being passed
-case $url in
+case "$url" in
 https://music.youtube.com/watch?v=+([a-zA-Z0-9_-])*)
   music
 ;;
