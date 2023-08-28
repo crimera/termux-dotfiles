@@ -54,12 +54,8 @@ video() {
 aria() {
   aria2c -x16 -d $DOWNLOADS \
     --on-download-complete "$HOME/bin/openfile" \
-    "$url"
+    $url
   exit
-}
-
-dl() {
-  axel -n 16 "$url"
 }
 
 spot() {
@@ -94,20 +90,17 @@ yt() {
 }
 
 uns() {
-  method="$(termux-dialog sheet -v "Music,Video,Aria,Axel" | jq '.index' -r)"
+  method="$(termux-dialog sheet -v "Music,Video,Aria" | jq '.index' -r)"
   case $method in
   0)
     music
-  ;;
+    ;;
   1)
     video
-  ;;
+    ;;
   2)
     aria
-  ;;
-  3)
-    dl
-  ;;
+    ;;
   esac
 }
 
