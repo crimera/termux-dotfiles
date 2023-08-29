@@ -15,47 +15,67 @@ url=$1
 
 echo $url
 
+# Enable extglob for regex
+shopt -s extglob
+# Returns the first error on a pipe
+set -o pipefail
+
 # Site regexs
 yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 
 # Functions for downloading 
 
+ytdl() {
+  ytout=$(yt-dlp "$url" --convert-thumbnails jpg --no-mtime "$@" | tee /dev/tty)
+  status=$?
+  echo status: $status
+
+  match="\"$STORAGE"
+  out=$( grep $match <<< ${ytout} | head -n 1 )
+  filepath=${out#*'"'}; filepath=${filepath%'"'*}
+  filename=${filepath%.*}
+ 
+  echo "$filename"
+  if [[ $status != 0 ]]; then
+    rm "$filename.jpg"
+  fi
+
+  path="$(ls "$filename"*)"
+  termux-notification --action "termux-open \"$path\"" -c "click to open" -t "Downloaded: $(basename "$filename")" --icon "download_done"
+}
+
 asmr() {
   echo ASMR
-  yt-dlp -f "bestaudio[ext=m4a]" -x --embed-thumbnail --embed-metadata \
-    -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title).150B-%(id)s.%(ext)s" --no-mtime "$url"
+  ytdl -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title).150B-%(id)s.%(ext)s" \
+    -x --embed-thumbnail --embed-metadata
 }
 
 music() {
   echo Music
-  yt-dlp -x --embed-thumbnail --embed-metadata \
-    -f "bestaudio[ext=m4a]" --audio-format m4a \
-    --postprocessor-args "-filter:v crop=in_h" \
-    -o "$MUSIC/%(title)s.%(ext)s" --no-mtime "$url"
+  ytdl -x --embed-thumbnail --embed-metadata \
+    -o "$MUSIC/%(title)s.%(ext)s" \
+    --postprocessor-args "ffmpeg:-filter:v crop=in_h"
 }
 
 video() {
   echo Video
-  yt-dlp "$url" -f "best[ext=mp4]" \
+  ytdl -f "best[ext=mp4]" \
     -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" \
-    --embed-subs --embed-thumbnail --no-mtime
+    --embed-subs --embed-thumbnail
 }
 
 aria() {
   aria2c -x16 -d $DOWNLOADS \
     --on-download-complete "$HOME/bin/openfile" \
     "$url"
-  exit
 }
 
 spot() {
   spotdl "$url" --output $MUSIC
-  exit
 }
 
 play_audio() {
   mpv --no-video "$url"
-  exit
 }
 
 yt() {
@@ -94,9 +114,6 @@ uns() {
   esac
 }
 
-# Enable extglob for regex
-shopt -s extglob
-
 # Check what site is being passed
 case "$url" in
 https://music.youtube.com/watch?v=+([a-zA-Z0-9_-])*)
@@ -123,5 +140,4 @@ https://music.youtube.com/watch?v=+([a-zA-Z0-9_-])*)
 ;;
 esac
 
-exit
 termux-toast -s "Download Done"
