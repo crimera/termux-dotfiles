@@ -23,25 +23,29 @@ set -o pipefail
 # Site regexs
 yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 
-# Functions for downloading 
-
-ytdl() {
-  ytout=$(yt-dlp "$url" --convert-thumbnails jpg --no-mtime "$@" | tee /dev/tty)
-  status=$?
-  echo status: $status
-
+# utils
+get_filename() {
   match="\"$STORAGE"
-  out=$( grep $match <<< ${ytout} | head -n 1 )
+  out=$( grep $match <<< "$1" | head -n 1 )
   filepath=${out#*'"'}; filepath=${filepath%'"'*}
-  filename=${filepath%.*}
- 
-  echo "$filename"
-  if [[ $status != 0 ]]; then
-    rm "$filename.jpg"
-  fi
+  echo "${filepath%.*}"
+}
 
-  path="$(ls "$filename"*)"
-  termux-notification --action "termux-open \"$path\"" -c "click to open" -t "Downloaded: $(basename "$filename")" --icon "download_done"
+notify() {
+  path="$(ls "$1"*)"
+  termux-notification --action "termux-open \"$path\"" -c "click to open" -t "Downloaded: $(basename "$1")" --icon "download_done"
+}
+
+# Functions for downloading
+ytdl() {
+  ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime "$@" | tee /dev/tty)
+  status=$?
+
+  filename="$(get_filename "$ytout")"
+  
+  if [ "$status" -eq 0 ]; then
+    notify "$filename"
+  fi
 }
 
 asmr() {
@@ -65,9 +69,10 @@ video() {
 }
 
 aria() {
-  aria2c -x16 -d $DOWNLOADS \
+  out=$(aria2c -x16 -d $DOWNLOADS \
     --on-download-complete "$HOME/bin/openfile" \
-    "$url"
+    --continue \
+    "$url")
 }
 
 spot() {
