@@ -10,8 +10,9 @@ case $1 in
   ;;
 esac
 
-ffmpeg -i $audio -i $image -map 0 -map 1 -c copy -c:v:1 png -disposition:v:1 attached_pic "out.$audio"
+ffmpeg -i "$audio" -i "$image" -map 0 -map 1 -c copy -c:v:1 png -disposition:v:1 attached_pic "out.$audio"
 
-rm $audio
-rm $image
-mv out.$audio $audio
+if [ $? -eq 0 ]; then
+  rm "$audio"
+  rm "$image"
+fi
