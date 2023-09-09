@@ -1,8 +1,24 @@
 #!/bin/bash
 
-for i in *.wav;
-  do name=`echo "$i" | cut -d'.' -f1`
-  echo "$name"
-  ffmpeg -i "$i" -c:a libvorbis -b:a 320k "${name}.ogg"
-  rm "$i"
+# config
+remove=true
+
+get_filename() {
+  out=$(head -n 1 <<< "$1" )
+  name=$(basename "$out")
+  echo "${name%.*}"
+}
+
+for i in "$@"; do
+  name="$(get_filename "$i").opus"
+  path=$(dirname "$i")
+  ffmpeg -i "$i" -c:a libvorbis -b:a 320k "$path/$name"
+  
+  if [ $? -ne 0 ]; then
+    exit
+  fi
+  
+  if [ "$remove" = true ]; then
+    rm "$i"
+  fi
 done
