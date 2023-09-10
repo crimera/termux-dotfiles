@@ -24,12 +24,6 @@ set -o pipefail
 yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 
 # utils
-get_filename() {
-  match="\"$STORAGE"
-  out=$( grep $match <<< "$1" | head -n 1 )
-  filepath=${out#*'"'}; filepath=${filepath%'"'*}
-  echo "${filepath%.*}"
-}
 
 notify() {
   path="$(ls "$1"*)"
@@ -38,13 +32,15 @@ notify() {
 
 # Functions for downloading
 ytdl() {
-  ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime "$@" | tee /dev/tty)
+  ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime --exec after_move:'echo "%(filepath)s"' --external-downloader aria2c --downloader-args aria2c:'-x16 --continue' "$@" | tee /dev/tty)
   status=$?
 
-  filename="$(get_filename "$ytout")"
+  filename="$(tail -n 1 <<< "$ytout")"
   
   if [ "$status" -eq 0 ]; then
     notify "$filename"
+  else
+    echo "$status" > code.txt
   fi
 }
 
