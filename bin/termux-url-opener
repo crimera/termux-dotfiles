@@ -27,12 +27,14 @@ yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 
 notify() {
   path="$(ls "$1"*)"
-  termux-notification --action "termux-open \"$path\"" -c "click to open" -t "Downloaded: $(basename "$1")" --icon "download_done"
+  thumb="${path%.*}.jpg"
+  termux-notification --action "termux-open \"$path\"" -c "Download complete" -t "$(basename "$1")" --icon "done" --image-path "$thumb"
+  rm "$thumb"
 }
 
 # Functions for downloading
 ytdl() {
-  ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime --exec after_move:'echo "%(filepath)s"' --external-downloader aria2c --downloader-args aria2c:'-x16 --continue' "$@" | tee /dev/tty)
+  ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime --exec after_move:'echo "%(filepath)s"' --write-thumbnail --external-downloader aria2c --downloader-args aria2c:'-x16 --continue' "$@" | tee /dev/tty)
   status=$?
 
   filename="$(tail -n 1 <<< "$ytout")"
