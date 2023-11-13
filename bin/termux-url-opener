@@ -34,7 +34,7 @@ notify() {
 
 # Functions for downloading
 ytdl() {
-  ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime --exec after_move:'echo "%(filepath)s"' --write-thumbnail --external-downloader aria2c --downloader-args aria2c:'-x16 --continue' "$@" | tee /dev/tty)
+  ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime --exec after_move:'echo "%(filepath)s"' --write-thumbnail "$@" | tee /dev/tty)
   status=$?
 
   filename="$(tail -n 1 <<< "$ytout")"
@@ -67,10 +67,10 @@ video() {
 }
 
 aria() {
-  out=$(aria2c -x16 -d $DOWNLOADS \
+  aria2c -x16 -d $DOWNLOADS \
     --on-download-complete "$HOME/bin/openfile" \
     --continue \
-    "$url")
+    "$url"
 }
 
 spot() {
