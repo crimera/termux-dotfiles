@@ -44,7 +44,7 @@ ytdl() {
   else
     echo "$status" > code.txt
 
-    path="$(ls "$1"*)"
+    path="$(ls "$filename"*)"
     thumb="${path%.*}.jpg"
     rm "$thumb"
   fi
