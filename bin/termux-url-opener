@@ -43,6 +43,10 @@ ytdl() {
     notify "$filename"
   else
     echo "$status" > code.txt
+
+    path="$(ls "$1"*)"
+    thumb="${path%.*}.jpg"
+    rm "$thumb"
   fi
 }
 
