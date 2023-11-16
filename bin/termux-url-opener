@@ -26,8 +26,8 @@ yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 # utils
 
 notify() {
-  path="$(ls "$1"*)"
-  thumb="${path%.*}.jpg"
+  path="${1%.*}"
+  thumb="$path.jpg"
   termux-notification --action "termux-open \"$path\"" -c "Download complete" -t "$(basename "$1")" --icon "done" --image-path "$thumb"
   rm "$thumb"
 }
@@ -37,15 +37,16 @@ ytdl() {
   ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime --exec after_move:'echo "%(filepath)s"' --write-thumbnail "$@" | tee /dev/tty)
   status=$?
 
-  filename="$(tail -n 1 <<< "$ytout")"
+  match="\"$STORAGE"
+  out=$( grep $match <<< ${ytout} | head -n 1 )
+  filepath=${out#*'"'}; filename=${filepath%'"'*}
   
   if [ "$status" -eq 0 ]; then
     notify "$filename"
   else
-    echo "$status" > code.txt
-
-    path="$(ls "$filename"*)"
-    thumb="${path%.*}.jpg"
+    echo "$status:$filename" > code.txt
+    path="${filename%.*}"
+    thumb="$path.jpg"
     rm "$thumb"
   fi
 }
