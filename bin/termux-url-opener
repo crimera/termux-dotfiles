@@ -36,15 +36,16 @@ notify() {
 ytdl() {
   ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime --exec after_move:'echo "%(filepath)s"' --write-thumbnail "$@" | tee /dev/tty)
   status=$?
-
-  match="\"$STORAGE"
-  out=$( grep $match <<< ${ytout} | head -n 1 )
-  filepath=${out#*'"'}; filename=${filepath%'"'*}
+  
+  filename="$(tail -n 1 <<< "$ytout")"
   
   if [ "$status" -eq 0 ]; then
     notify "$filename"
   else
     echo "$status:$filename" > code.txt
+    match="\"$STORAGE"
+    out=$( grep $match <<< ${ytout} | head -n 1 )
+    filepath=${out#*'"'}; filename=${filepath%'"'*}
     path="${filename%.*}"
     thumb="$path.jpg"
     rm "$thumb"
