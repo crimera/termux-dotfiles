@@ -8,6 +8,7 @@ ASMR="$STORAGE/shared/.nsfw"
 VIDEOS="$STORAGE/movies"
 CLIPS="$STORAGE/movies/Clips"
 DOWNLOADS="$STORAGE/downloads"
+AUTOASMRDL=false
 
 # End
 
@@ -88,6 +89,14 @@ play_audio() {
 }
 
 yt() {
+  if [ "$AUTOASMRDL" = true ]; then
+    title="$(yt-dlp --get-title $url)"
+    if [[ "$title" == *ASMR* ]]; then
+      asmr
+      exit
+    fi
+  fi
+
   method="$(termux-dialog sheet -v "ASMR,Music,Video,Play in mpv" | jq '.index' -r)"
   case $method in
   0)
