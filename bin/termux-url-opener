@@ -9,6 +9,7 @@ VIDEOS="$STORAGE/movies"
 CLIPS="$STORAGE/movies/Clips"
 DOWNLOADS="$STORAGE/downloads"
 AUTOASMRDL=false
+USELOCALSPOTDL=false
 
 # End
 
@@ -81,6 +82,11 @@ aria() {
 }
 
 spot() {
+  if [ "$USELOCALSPOTDL" = true ]; then
+    /data/data/com.termux/files/home/bin/spotdl.py $url
+    return
+  fi
+  
   spotdl "$url" --output $MUSIC
 }
 
