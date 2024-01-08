@@ -9,7 +9,7 @@ VIDEOS="$STORAGE/movies"
 CLIPS="$STORAGE/movies/Clips"
 DOWNLOADS="$STORAGE/downloads"
 AUTOASMRDL=false
-USELOCALSPOTDL=false
+USELOCALSPOTDL=true
 
 # End
 
