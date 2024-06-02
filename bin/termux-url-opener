@@ -30,7 +30,7 @@ yt="^(https?\:\/\/)?(((www|m)\.)?youtube\.com|youtu\.be)\/.+$"
 notify() {
   path="${1%.*}"
   thumb="$path.jpg"
-  termux-notification --action "termux-open \"$path\"" -c "Download complete" -t "$(basename "$1")" --icon "done" --image-path "$thumb"
+  termux-notification --action "termux-open \"$1\"" -c "Download complete" -t "$(basename "$1")" --icon "done" --image-path "$thumb"
   rm "$thumb"
 }
 
