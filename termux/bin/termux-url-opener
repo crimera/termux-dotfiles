@@ -39,7 +39,7 @@ notify() {
 
 # Functions for downloading
 ytdl() {
-  ytout=$(yt-dlp "$url" -N 4 --convert-thumbnails jpg --no-mtime --exec after_move:'echo "%(filepath)s"' --write-thumbnail "$@" | tee /dev/tty)
+  ytout=$(yt-dlp "$url" -N 16 --limit-rate 5M --convert-thumbnails jpg --no-mtime --exec after_move:'echo "%(filepath)s"' --write-thumbnail "$@" | tee /dev/tty)
   status=$?
   
   filename="$(tail -n 1 <<< "$ytout")"
@@ -47,7 +47,7 @@ ytdl() {
   if [ "$status" -eq 0 ]; then
     notify "$filename"
   else
-    echo "$status:$filename" > code.txt
+    echo "$status:$filename:method:$method" > code.txt
     match="\"$STORAGE"
     out=$( grep $match <<< ${ytout} | head -n 1 )
     filepath=${out#*'"'}; filename=${filepath%'"'*}
@@ -59,7 +59,11 @@ ytdl() {
 
 asmr() {
   echo ASMR
-  ytdl -o "$ASMR/yt/%(channel)s/%(upload_date)s-%(title).150B-%(id)s.%(ext)s" \
+  site="yt/%(channel)s"
+  if echo "$url" | grep -q "www.twitch.tv"; then
+    site="twitch/%(uploader_id)s"
+  fi
+  ytdl -o "$ASMR/$site/%(uploader_id)s %(upload_date)s-%(title).150B-%(id)s.%(ext)s" \
     -x --embed-thumbnail --embed-metadata
 }
 
@@ -75,6 +79,12 @@ video() {
   ytdl -f "best[ext=mp4]" \
     -o "$VIDEOS/%(title)s-%(id)s.%(ext)s" \
     --embed-subs --embed-thumbnail
+}
+
+space() {
+    ytdl -x \
+    -o "$ASMR/yt/space/%(title)s-%(id)s.%(ext)s" \
+    --embed-thumbnail --cookies "$DOWNLOADS/x-cookies.txt"
 }
 
 aria() {
@@ -106,7 +116,7 @@ yt() {
     fi
   fi
 
-  method="$(termux-dialog sheet -v "ASMR,Music,Video,Play in mpv" | jq '.index' -r)"
+  method="$(termux-dialog sheet -v "ASMR,Music,Video,Space" | jq '.index' -r)"
   case $method in
   0)
     asmr
@@ -118,7 +128,7 @@ yt() {
     video
   ;;
   3)
-    play_audio
+    space
   ;;
   *)
     exit
@@ -146,13 +156,13 @@ case "$url" in
 https://music.youtube.com/watch?v=+([a-zA-Z0-9_-])*)
   music
 ;;
-*youtube.com* | *youtu.be*)
+*youtube.com* | *youtu.be* | *www.twitch.tv*)
   echo Download a yt vid
   yt
 ;;
 *twitter*)
   echo twitter
-  video
+  space
 ;;
 *sourceforge* | *zippyshare* | *github*)
   echo download file
