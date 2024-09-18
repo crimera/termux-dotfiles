@@ -4,21 +4,18 @@
 packages="python stow git jq termux-api ffmpeg aria2"
 
 mysetup="fish tmux neovim lazygit"
-devpkgs="rust golang rust-analyzer ruff"
-
 pippkgs="yt-dlp"
-pipdevpkgs="pyright"
 
 # TODO: add uninstall option
 # use -d flag in stow for uninstall
 
-pkg install -y $packages $mysetup $devpkgs
+pkg install -y $packages $mysetup
 
 # TODO: add flag to install my setup
 # just make anorher apt install  command 
 # and wrap it with an if
 
-pip install -U $pippkgs $pipdevpkgs
+pip install -U $pippkgs
 
 if [ -d "$HOME/.termux" ]; then
 	echo "moving .termux to .termuxback"

@@ -46,9 +46,7 @@ require("lazy").setup({
 				})
 			end
 
-			lspconfig.eslint.setup {
-
-			}
+			lspconfig.eslint.setup({})
 
 			-- luasnip setup
 			local luasnip = require("luasnip")
@@ -63,7 +61,7 @@ require("lazy").setup({
 				},
 				selection = {
 					behavior = cmp.SelectBehavior.Select,
-					auto_select = true
+					auto_select = true,
 				},
 				mapping = cmp.mapping.preset.insert({
 					["<C-u>"] = cmp.mapping.scroll_docs(-4), -- Up
@@ -99,10 +97,9 @@ require("lazy").setup({
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "buffer" },
-					{ name = "path" }
+					{ name = "path" },
 				},
 			})
-
 		end,
 	},
 	{
@@ -159,6 +156,13 @@ require("lazy").setup({
 			--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 			--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+		end,
+	},
+	{
+		"nvim-tree/nvim-tree.lua",
+		config = function()
+			require("nvim-tree").setup()
+			vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 		end,
 	},
 })

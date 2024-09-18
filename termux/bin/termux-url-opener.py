@@ -62,7 +62,7 @@ asmr = (
 )
 
 
-# should only take in the names then return the index
+# should only take option names and return the chosen index
 def dialog(options: List[Tuple[str, Callable]], url: str):
     option_names: str = ",".join([x[0] for x in options])
     result = run("termux-dialog", "sheet", "-v", option_names).stdout
@@ -78,7 +78,7 @@ def main():
 
     match host:
         case "www.youtube.com" | "m.youtube.com":
-            run(YT_DLP + [url, "-x"])
+            run(YT_DLP, url, "-x")
         case _:
             dialog(url)
 
