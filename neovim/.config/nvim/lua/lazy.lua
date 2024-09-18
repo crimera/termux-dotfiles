@@ -18,7 +18,7 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup({
+require("lazy").setup({
 	{ "windwp/nvim-autopairs", event = "InsertEnter", config = true },
-  	{import = 'plugins'},
+	{ import = "plugins" },
 })
