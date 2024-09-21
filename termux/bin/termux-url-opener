@@ -156,11 +156,11 @@ case "$url" in
 https://music.youtube.com/watch?v=+([a-zA-Z0-9_-])*)
   music
 ;;
-*youtube.com* | *youtu.be* | *www.twitch.tv*)
+*youtube.com* | *youtu.be* | *www.twitch.tv* | *m.twitch.tv*)
   echo Download a yt vid
   yt
 ;;
-*twitter*)
+*twitter.com*)
   echo twitter
   space
 ;;
