@@ -4,10 +4,11 @@ end
 
 fish_add_path "$HOME/bin"
 
-if ! command -v getprop > /dev/null
-	## IN VOID ##
-	alias xi="sudo xbps-install"
-end
+alias xi="sudo pacman -S"
+alias xr="sudo pacman -R --recursive"
 
-# uv
-fish_add_path "/home/void/.local/bin"
+
+if ! command -v getprop > /dev/null
+	# uv
+	fish_add_path "~/.local/bin"
+end
