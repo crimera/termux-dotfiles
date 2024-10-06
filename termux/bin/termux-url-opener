@@ -63,7 +63,7 @@ asmr() {
   if echo "$url" | grep -q "www.twitch.tv"; then
     site="twitch/%(uploader_id)s"
   fi
-  ytdl -o "$ASMR/$site/%(uploader_id)s %(upload_date)s-%(title).150B-%(id)s.%(ext)s" \
+  ytdl -o "$ASMR/$site/%(uploader_id)s %(upload_date)s %(title).150B-%(id)s.%(ext)s" \
     -x --embed-thumbnail --embed-metadata
 }
 
@@ -83,7 +83,7 @@ video() {
 
 space() {
     ytdl -x \
-    -o "$ASMR/yt/space/%(title)s-%(id)s.%(ext)s" \
+    -o "$ASMR/space/%(uploader_id)s/%(title)s-%(id)s.%(ext)s" \
     --embed-thumbnail --cookies "$DOWNLOADS/x-cookies.txt"
 }
 
