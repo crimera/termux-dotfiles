@@ -31,33 +31,33 @@ def output(output):
 
 
 def run(*cmd: str):
-    out = subprocess.run(
-        cmd, universal_newlines=True, stdout=subprocess.PIPE
-    )
-    
-    if (DEBUG):
+    out = subprocess.run(cmd, universal_newlines=True, stdout=subprocess.PIPE)
+
+    if DEBUG:
         print(out)
-        
+
     return out
 
 
 music = (
     "Music",
     lambda url: run(
-            url,
-            *YT_DLP,
-            "--postprocessor-args",
-            "ffmpeg:-filter:v crop=in_h",
-            output(f"{MUSIC}/%(title)s.%(ext)s"),
+        url,
+        *YT_DLP,
+        "--postprocessor-args",
+        "ffmpeg:-filter:v crop=in_h",
+        output(f"{MUSIC}/%(title)s.%(ext)s"),
     ),
 )
 
 asmr = (
     "ASMR",
     lambda url: run(
-            url,
-            *YT_DLP,
-            output(f"{ASMR}/yt/%(channel)s/%(uploader_id)s %(upload_date)s-%(title).150B-%(id)s.%(ext)s"),
+        url,
+        *YT_DLP,
+        output(
+            f"{ASMR}/yt/%(channel)s/%(uploader_id)s %(upload_date)s-%(title).150B-%(id)s.%(ext)s"
+        ),
     ),
 )
 
@@ -68,6 +68,7 @@ def dialog(options: List[Tuple[str, Callable]], url: str):
     result = run("termux-dialog", "sheet", "-v", option_names).stdout
     index = json.load(result)["index"]
     options[index][1](url)
+
 
 def main():
     url = sys.argv[1]
@@ -81,6 +82,7 @@ def main():
             run(YT_DLP, url, "-x")
         case _:
             dialog(url)
+
 
 if __name__ == "__main__":
     dialog([music, asmr])
