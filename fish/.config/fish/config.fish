@@ -12,10 +12,9 @@ else
 	alias xr="xbps-remove -Ro"
 end
 
+fish_add_path "~/.cargo/bin"
+fish_add_path "~/.local/bin"
 
-if ! command -v getprop > /dev/null
-	# uv
-	fish_add_path "~/.local/bin"
-else
-	fish_add_path "~/bin"
+if command -v getprop > /dev/null
+	fish_add_path "~/bin" # termux binaries
 end
