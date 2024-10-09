@@ -16,7 +16,7 @@ pippkgs="yt-dlp"
 pkgman="sudo xbps-install -y"
 dirs="neovim fish tmux"
 
-if type -v getprop &> /dev/null; then
+if type getprop &> /dev/null; then
 	echo "You are on termux"
 	pkgman="pkg -y"
 	
@@ -28,7 +28,7 @@ else
 	mysetup="$mysetup fish-shell python-pip"
 fi
 
-if type -v getprop &> /dev/null; then
+if type getprop &> /dev/null; then
 	if [ -d "$HOME/.termux" ]; then
 		echo "moving .termux to .termuxback"
 		mv "$HOME/.termux" "$HOME/.termuxbak"
