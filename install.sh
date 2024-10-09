@@ -18,7 +18,7 @@ dirs="neovim fish tmux"
 
 if type getprop &> /dev/null; then
 	echo "You are on termux"
-	pkgman="pkg -y"
+	pkgman="pkg install -y"
 	
 	mysetup="$mysetup fish"
 	packages="$packages termux-api"
