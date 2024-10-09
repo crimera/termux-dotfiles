@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # nessecary for basic termux-url-opener functionality and installation
-packages="python stow git jq ffmpeg aria2"
+packages="python stow git jq ffmpeg aria2 tur-repo"
 
-mysetup="tmux neovim lazygit"
+mysetup="tmux neovim lazygit zoxide ripgrep fzf gh"
 pippkgs="yt-dlp"
 
 # TODO: add uninstall option
@@ -24,6 +24,8 @@ if type getprop &> /dev/null; then
 	packages="$packages termux-api"
 
 	dirs="$dirs termux"
+
+	chsh -s fish
 else
 	mysetup="$mysetup fish-shell python-pip"
 fi
@@ -40,4 +42,4 @@ pip install -U $pippkgs
 
 for dir in $dirs; do
   stow $dir -t ~/
- done
+done
