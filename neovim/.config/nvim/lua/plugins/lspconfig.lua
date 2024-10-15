@@ -83,7 +83,7 @@ return {
 		local lspconfig = require("lspconfig")
 
 		-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-		local servers = { "lua_ls", "clangd", "zls", "taplo", "ruff", "pyright", "gopls", "rust_analyzer" }
+		local servers = { "lua_ls", "clangd", "zls", "taplo", "ruff", "pyright", "gopls", "rust_analyzer", "html", "emmet_language_server", "svelte", "ts_ls" }
 
 		for _, lsp in ipairs(servers) do
 			lspconfig[lsp].setup({
