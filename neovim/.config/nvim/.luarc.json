@@ -1,0 +1,29 @@
+{
+    "workspace.library": [
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\neodev.nvim\\types\\stable",
+        "C:\\Program Files\\Neovim\\share\\nvim\\runtime\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\cmp-nvim-lsp\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\conform.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\cmp_luasnip\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\telescope.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\nvim-treesitter\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\LuaSnip\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\plenary.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\fidget.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\neodev.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\neo-tree.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\lazy.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\gitsigns.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\nvim-autopairs\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\nvim-lspconfig\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\nui.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\nvim-cmp\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\nvim-web-devicons\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\cmp-path\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\flash.nvim\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\cmp-buffer\\lua",
+        "C:\\Users\\Dingle\\AppData\\Local\\nvim-data\\lazy\\gruvbox.nvim\\lua",
+        "D:/Dev/termux-dotfiles/neovim/.config/nvim/lua",
+        "${3rd}/luv/library"
+    ]
+}
