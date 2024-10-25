@@ -15,8 +15,15 @@ return {
 		-- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
 		-- used for completion, annotations and signatures of Neovim apis
 		{ "folke/neodev.nvim", opts = {} },
+
+		-- Mason
+		"williamboman/mason.nvim",
+		"williamboman/mason-lspconfig.nvim",
 	},
 	config = function()
+		require("mason").setup()
+		require("mason-lspconfig").setup()
+
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 			callback = function(event)
@@ -83,7 +90,20 @@ return {
 		local lspconfig = require("lspconfig")
 
 		-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-		local servers = { "lua_ls", "clangd", "zls", "taplo", "ruff", "pyright", "gopls", "rust_analyzer", "html", "emmet_language_server", "svelte", "ts_ls" }
+		local servers = {
+			"lua_ls",
+			"clangd",
+			"zls",
+			"taplo",
+			"ruff",
+			"gopls",
+			"rust_analyzer",
+			"html",
+			"emmet_language_server",
+			"eslint",
+			"svelte",
+			"ts_ls",
+		}
 
 		for _, lsp in ipairs(servers) do
 			lspconfig[lsp].setup({
@@ -94,6 +114,20 @@ return {
 		end
 
 		lspconfig.eslint.setup({})
+		lspconfig.pyright.setup({
+			settings = {
+				pyright = {
+					disableOrganizeImports = true,
+					disableTaggedHints = true,
+				},
+				python = {
+					analysis = {
+						ignore = { "*" },
+						typeCheckingMode = "off",
+					},
+				},
+			},
+		})
 
 		-- luasnip setup
 		local luasnip = require("luasnip")
