@@ -11,14 +11,12 @@ return {
 				desc = "[F]ormat buffer",
 			},
 		},
-		config = function()
-			require("conform").setup({
-				formatters_by_ft = {
-					lua = { "stylua" },
-					rust = { "rustfmt" },
-					python = { "ruff_format" },
-				},
-			})
-		end,
+		opts = {
+			formatters_by_ft = {
+				lua = { "stylua" },
+				rust = { "rustfmt" },
+				python = { "ruff_format" },
+			},
+		},
 	},
 }
