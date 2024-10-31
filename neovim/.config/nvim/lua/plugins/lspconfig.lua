@@ -89,6 +89,8 @@ return {
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 		local lspconfig = require("lspconfig")
 
+		vim.filetype.add({ extension = { gs = "javascript" } })
+
 		-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 		local servers = {
 			"lua_ls",
@@ -103,6 +105,7 @@ return {
 			"eslint",
 			"svelte",
 			"ts_ls",
+			"cmake",
 		}
 
 		for _, lsp in ipairs(servers) do
