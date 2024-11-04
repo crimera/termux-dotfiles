@@ -95,28 +95,25 @@ return {
 		local servers = {
 			"lua_ls",
 			"clangd",
-			"zls",
 			"taplo",
 			"ruff",
 			"gopls",
 			"rust_analyzer",
 			"html",
 			"emmet_language_server",
-			"eslint",
 			"svelte",
+			"eslint",
 			"ts_ls",
 			"cmake",
 		}
 
 		for _, lsp in ipairs(servers) do
 			lspconfig[lsp].setup({
-
 				-- on_attach = my_custom_on_attach,
 				capabilities = capabilities,
 			})
 		end
 
-		lspconfig.eslint.setup({})
 		lspconfig.pyright.setup({
 			settings = {
 				pyright = {
@@ -130,6 +127,12 @@ return {
 					},
 				},
 			},
+		})
+
+		lspconfig.zls.setup({
+			settings = {
+				enable_build_on_save = false
+			}
 		})
 
 		-- luasnip setup
