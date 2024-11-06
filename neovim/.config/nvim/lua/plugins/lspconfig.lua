@@ -131,8 +131,8 @@ return {
 
 		lspconfig.zls.setup({
 			settings = {
-				enable_build_on_save = false
-			}
+				enable_build_on_save = false,
+			},
 		})
 
 		-- luasnip setup

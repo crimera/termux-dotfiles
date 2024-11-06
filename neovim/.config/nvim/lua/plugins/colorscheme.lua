@@ -5,6 +5,6 @@ return {
 		vim.cmd.colorscheme("tokyonight-night")
 	end,
 	opts = {
-		transparent = true
+		transparent = true,
 	}
 }
