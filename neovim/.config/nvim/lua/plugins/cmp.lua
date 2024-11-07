@@ -5,17 +5,17 @@ return {
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-nvim-lsp",
-		-- "saadparwaiz1/cmp_luasnip",
-		-- "L3MON4D3/LuaSnip",
+		"saadparwaiz1/cmp_luasnip",
+		"L3MON4D3/LuaSnip",
 	},
 	opts = function()
-		-- local luasnip = require("luasnip")
+		local luasnip = require("luasnip")
 		local cmp = require("cmp")
 
 		return {
 			snippet = {
 				expand = function(args)
-					-- luasnip.lsp_expand(args.body)
+					luasnip.lsp_expand(args.body)
 				end,
 			},
 			selection = {
