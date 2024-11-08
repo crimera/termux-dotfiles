@@ -8,7 +8,23 @@ return {
 	},
 	keys = {
 		{ "<leader>av", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat - Toggle" },
-		{ "<leader>as", "<cmd>CopilotChatCommitStage<cr>", desc = "CopilotChat - Toggle" },
+		{
+			"<leader>as",
+			"<cmd>CopilotChatCommitStage<cr>",
+			desc = "Use copilot to generate commit for stagged changes",
+		},
+		{
+			"<leader>ai",
+			function()
+				local input = vim.fn.input("Quick Chat: ")
+
+				if input ~= "" then
+					require("CopilotChat").ask(input, { selection = require("CopilotChat.select").visual })
+				end
+			end,
+			desc = "CopilotChat Selected",
+			mode = "v",
+		},
 		{
 			"<leader>ai",
 			function()
@@ -19,6 +35,7 @@ return {
 				end
 			end,
 			desc = "CopilotChat - Quick chat",
+			mode = "n",
 		},
 	},
 	opts = {
