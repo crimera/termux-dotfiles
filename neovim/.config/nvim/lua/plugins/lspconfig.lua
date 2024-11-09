@@ -100,7 +100,6 @@ return {
 			"ts_ls",
 			"cmake",
 			"tailwindcss",
-			"bufls"
 		}
 
 		for _, lsp in ipairs(servers) do

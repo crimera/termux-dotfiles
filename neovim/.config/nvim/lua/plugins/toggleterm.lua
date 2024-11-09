@@ -1,5 +1,6 @@
 return {
 	"akinsho/toggleterm.nvim",
+	event = "VeryLazy",
 	init = function()
 		vim.opt.shellcmdflag =
 			"-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';Remove-Alias -Force -ErrorAction SilentlyContinue tee;"
