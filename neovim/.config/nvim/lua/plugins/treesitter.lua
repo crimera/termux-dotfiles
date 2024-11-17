@@ -1,6 +1,6 @@
 return { -- Highlight, edit, and navigate code
 	"nvim-treesitter/nvim-treesitter",
-	event = "VeryLazy",
+	event = "BufReadPre",
 	build = ":TSUpdate",
 	commit = "8012b55eee65eba1d1ee4df0a186d30e72dcbe65",
 	config = function()

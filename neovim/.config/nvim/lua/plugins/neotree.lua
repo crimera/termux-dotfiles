@@ -3,7 +3,7 @@
 
 return {
 	"nvim-neo-tree/neo-tree.nvim",
-	event = "VeryLazy",
+	lazy = true,
 	version = "*",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
