@@ -2,8 +2,6 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-fish_add_path "$HOME/bin"
-
 if command -v pacman > /dev/null
 	alias xi="sudo pacman -S"
 	alias xr="sudo pacman -R --recursive"
@@ -16,7 +14,7 @@ fish_add_path "~/.cargo/bin"
 fish_add_path "~/.local/bin"
 
 if command -v getprop > /dev/null
-	fish_add_path "~/bin" # termux binaries
+	fish_add_path "$HOME/bin" # termux binaries
 end
 
 # bun
