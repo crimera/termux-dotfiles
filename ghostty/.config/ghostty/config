@@ -1,6 +1,6 @@
 custom-shader = ./shaders/cursor_smear.glsl
 
-command = /opt/homebrew/bin/fish --login --interactive -c "tmux"
+command = /opt/homebrew/bin/fish --login --interactive -c "tmux new -As0"
 shell-integration = fish
 
 font-size = 20
