@@ -10,8 +10,9 @@ else
 	alias xr="sudo xbps-remove -Ro"
 end
 
-fish_add_path "~/.cargo/bin"
-fish_add_path "~/.local/bin"
+fish_add_path "$HOME/.cargo/bin"
+fish_add_path "$HOME/.local/bin"
+fish_add_path "$HOME/.deno/bin"
 
 if command -v getprop > /dev/null
 	fish_add_path "$HOME/bin" # termux binaries
