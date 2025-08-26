@@ -1,0 +1,28 @@
+{
+  "providers": {
+    "GHCP": {
+      "api_key": "dummy",
+      "base_url": "http://localhost:4141",
+      "type": "openai",
+      "models": [
+        {
+          "id": "gpt-4.1",
+          "name": "GPT-4.1",
+          "context_window": 128000,
+          "default_max_tokens": 16384,
+          "supports_attachments": true
+        }
+      ]
+    }
+  },
+  "models": {
+    "large": {
+      "model": "gpt-4.1",
+      "provider": "GHCP"
+    },
+    "small": {
+      "model": "gpt-4.1",
+      "provider": "GHCP"
+    }
+  }
+}
