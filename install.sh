@@ -15,6 +15,7 @@ pippkgs="yt-dlp"
 
 pkgman="sudo xbps-install -y"
 dirs="neovim fish tmux bash crush"
+dirs="neovim fish tmux scripts"
 
 if type getprop &> /dev/null; then
 	echo "You are on termux"

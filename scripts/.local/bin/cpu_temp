@@ -1,0 +1,10 @@
+#!/bin/bash
+if command -v getprop > /dev/null 2>&1; then
+    cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1/1000 "°C"}'
+else
+    if [ "$(uname -s)" = "Darwin" ]; then
+        echo "$(smctemp -c)°C"
+    else
+        echo "Unsupported platform"
+    fi
+fi
