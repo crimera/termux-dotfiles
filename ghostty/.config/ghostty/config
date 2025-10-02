@@ -7,6 +7,10 @@ font-size = 20
 background-opacity = 0.7
 background-blur = true
 
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
+window-padding-color = extend
 window-decoration = false
 
 keybind = global:alt+q=toggle_quick_terminal
