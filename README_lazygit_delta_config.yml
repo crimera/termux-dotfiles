@@ -1,0 +1,8 @@
+# Lazygit config enabling delta pager for syntax-highlighted diffs
+# Place this content into: ~/.config/lazygit/config.yml
+# (Your fish config now exports XDG_CONFIG_HOME so this is the default path.)
+
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"

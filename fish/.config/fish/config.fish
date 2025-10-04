@@ -21,3 +21,6 @@ end
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# Lazygit: leverage XDG base dir so config goes in ~/.config/lazygit
+set -x XDG_CONFIG_HOME $HOME/.config
