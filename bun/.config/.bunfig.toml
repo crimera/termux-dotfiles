@@ -1,0 +1,3 @@
+[install.cache]
+# the directory to use for the cache
+dir = "/Volumes/realme/.bun/install/cache"
