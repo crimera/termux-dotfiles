@@ -4,7 +4,9 @@ command = /opt/homebrew/bin/fish --login --interactive -c "tmux new -As0"
 shell-integration = fish
 
 font-size = 20
-background-opacity = 0.7
+font-family = "JetBrainsMono NFM Regular"
+
+background-opacity = 0.9
 background-blur = true
 
 window-padding-x = 0
@@ -14,3 +16,5 @@ window-padding-color = extend
 window-decoration = false
 
 keybind = global:alt+q=toggle_quick_terminal
+
+quick-terminal-size = 100%
