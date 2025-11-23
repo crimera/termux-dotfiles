@@ -22,5 +22,11 @@ end
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 
+# Use external storage on macOS if available
+if test (uname) = Darwin; and test -d "/Volumes/realme"
+    set --export UV_CACHE_DIR "/Volumes/realme/.cache/uv"
+		set --export GRADLE_USER_HOME "/Volumes/realme/.gradle"
+end
+
 # Lazygit: leverage XDG base dir so config goes in ~/.config/lazygit
 set -x XDG_CONFIG_HOME $HOME/.config
