@@ -4,6 +4,7 @@ if ! command -v getprop > /dev/null
 	## IN TERMUX ##
 
 	fish_vi_key_bindings
+	bind -M insert \cr history-pager
 	# Emulates vim's cursor shape behavior
 	# Set the normal and visual mode cursors to a block
 	set fish_cursor_default block
